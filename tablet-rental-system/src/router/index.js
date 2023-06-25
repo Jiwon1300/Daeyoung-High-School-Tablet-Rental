@@ -1,44 +1,49 @@
 import {createRouter,createWebHistory} from 'vue-router'
-import MainRentalView from '../views/MainRentalView.vue'
-import StudentAuthentication from '../views/rentalViews/StudentAuthentication.vue'
-import TabletSelection from '../views/rentalViews/TabletSelection.vue'
-import StudentBiometricAuthentication from '../views/rentalViews/StudentBiometricAuthentication.vue'
-import RentalPeriodSelection from '../views/rentalViews/RentalPeriodSelection.vue'
-import RentalSuccess from '../views/rentalViews/SuccessRental.vue'
-import ReturnStudentAuthentication from '../views/returnViews/StudentAuthentication.vue'
+import mainRentalView from '../views/MainRentalView.vue'
+import studentAuthentication from '../views/rentalViews/StudentAuthentication.vue'
+import tabletSelection from '../views/rentalViews/TabletSelection.vue'
+import studentBiometricAuthentication from '../views/rentalViews/StudentBiometricAuthentication.vue'
+import rentalPeriodSelection from '../views/rentalViews/RentalPeriodSelection.vue'
+import rentalSuccess from '../views/rentalViews/SuccessRental.vue'
+import returnStudentAuthentication from '../views/returnViews/StudentAuthentication.vue'
+import returnWaiting from '../views/returnViews/returnWaiting.vue'
 
 const routes = [
     {
         path:"/",
-        component:MainRentalView
+        component:mainRentalView
     },
     {
         path:"/studentAuthentication",
-        component:StudentAuthentication
+        component:studentAuthentication
     },
     {
         name:"TabletSelection",
         path:"/tabletSelection",
-        component:TabletSelection
+        component:tabletSelection
     },
     {
         path:"/studentBiometricAuthentication",
-        component:StudentBiometricAuthentication
+        component:studentBiometricAuthentication
     },
     {
         name:"RentalPeriodSelection",
         path:"/rentalPeriodSelection",
-        component:RentalPeriodSelection
+        component:rentalPeriodSelection
     },
     {
         name:"rentalSuccess",
         path:'/rentalSuccess',
-        component:RentalSuccess
+        component:rentalSuccess
     },
     {
         name:"returnAuthentication",
         path:'/returnStudentAuthentication',
-        component:ReturnStudentAuthentication
+        component:returnStudentAuthentication
+    },
+    {
+        path:'/returnWaiting',
+        component:returnWaiting
     },
     {
         path: '/:pathMatch(.*)*',

@@ -13,20 +13,21 @@ const db = getFirestore()
     name : 학생이름
 
 */
-router.get('/getstudent/:id/:name', async (req, res) => {
-    if (req.params.id != null && req.params.name != null) {
-        const studentData = await db.collection("students").doc(`${req.params.id}`).get()
+router.get('/getstudent', async (req, res) => {
+    
+    if (req.query.id != null && req.query.name != null) {
+        const studentData = await db.collection("students").doc(`${req.query.id}`).get()
         if (studentData.data() != null) {
-            if (studentData.data().name == req.params.name) {
+            if (studentData.data().name == req.query.name) {
                 res.status(200).send({isRental:studentData.data().isRental,
                     isRestrict:studentData.data().isRestrict})
             } else res.status(400).send("Not Found Student")
         } else res.status(400).send("Not Found Student")
 
-    }
+    }else res.status(400).send("Not Found Student")
 })
 
-router.get('/getstudentrental/:id', async (req, res) => {
+router.post('/createstudent', async (req, res) => {
     if (req.params.id != null) {
 
     }

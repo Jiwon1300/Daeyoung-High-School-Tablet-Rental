@@ -76,9 +76,14 @@ export default {
         verify() {
             this.isLoading = true
             axios({
-                url: `/api/student/getstudent/${this.students.id}/${this.students.name}`,
+                url: `/api/student/getstudent`,
+                params:{
+                    id:this.students.id,
+                    name:this.students.name
+                },
                 method: 'get'
             }).then((res) => {
+                console.log(res)
                 if (res.data.isRental) {
                     this.alreadyRental()
                     this.isLoading = false
