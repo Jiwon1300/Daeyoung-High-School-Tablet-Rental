@@ -7,20 +7,23 @@ import firebase from './firebase.js'
 import student from './student.js'
 import { Server } from 'socket.io';
 import cors from 'cors'
-
+import axios from 'axios'
 
 const io = new Server();
 
 io.on('connection', (socket) => {
     console.log('클라이언트가 연결되었습니다')
+
+    // 웹클라이언트에서 수신
     socket.on('startVerify', (data) => {
         /*
-            프론트엔드 데이터 수신
+            프론트엔드 데이터 수신 -> 태블릿 지문 이동
             태블릿 케이스 정보 & 학생정보
         */
-        io.emit(`tabletCase-${data.tabletCase}`, {
+        io.emit(`startBiometricVerify`, {
             tabletCase: data.tabletCase,
-            studentId: data.studentId
+            tabletId: data.tabletCase.tabletId,
+            studentId: data.studentId // 추후 지문 아이디로 변경
         })
     })
     /*
@@ -30,11 +33,42 @@ io.on('connection', (socket) => {
 
     */
     socket.on('doneVerify', (data) => {
-        io.emit(`done-${data.tabletCase}`,data.studentId)
+        io.emit(`successVerify`, { studentId: data.studentId })
+        io.emit('rentalStart', { tabletCase })
     })
     socket.on('failVerify', (data) => {
 
     })
+    socket.on('return', (data) => {
+        io.emit('tabletReturn', {
+            tabletId: data.tabletId,
+            tabletCaseId: data.tabletCaseId,
+            studentId: data.studentId
+        })
+    })
+    socket.on('returnSuccess',(data)=>{
+        axios({
+            url:"/api/tablet/rentalcancel",
+            method:'post',
+            data:{
+                tabletId:data.tabletId,
+                tabletCaseId:data.tabletCaseId,
+                isCancel:false
+            }
+        })
+    })
+    socket.on('tabletRentalCancel', (data) => {
+        axios({
+            url: '/api/tablet/returntablet',
+            method:'post',
+            data:{
+                tabletId:data.tabletCaseId,
+                studentId:data.studentId,
+                tabletId:data.tabletId
+            }
+        })
+    })
+
 })
 
 

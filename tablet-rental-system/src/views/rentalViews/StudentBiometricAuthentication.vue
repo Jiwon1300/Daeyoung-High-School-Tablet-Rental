@@ -21,6 +21,7 @@
 }
 
 .fade-enter-active,
+
 .fade-leave-active {
     transition: opacity 0.5s;
 }
@@ -69,33 +70,36 @@ export default {
             socket.connect()
             socket.emit("startVerify", {
                 tabletCase: this.tabletData.tabletCaseId,
-                studentId: this.studentData.studentId
+                studentId: this.studentData.studentId,
+                tabletId:this.tabletData.tabletId
             })
             // 태블릿 보관함 번호 확인
 
-            socket.on(`done-${this.tabletData.tabletCaseId}`, (data) => {
-                axios({
-                    method: "post",
-                    url: '/api/tablet/startrental',
-                    data: {
-                        rentalData: {
-                            tabletCaseID: this.tabletData.tabletCaseId,
-                            tabletId: this.tabletData.tabletId,
-                            studentId: this.studentData.studentId,
-                            rentalPeriod: this.rentalPeriod
+            socket.on(`successVerify`, (data) => {
+                if (data.studentId == this.studentData.studentId) {
+                    axios({
+                        method: "post",
+                        url: '/api/tablet/startrental',
+                        data: {
+                            rentalData: {
+                                tabletCaseID: this.tabletData.tabletCaseId,
+                                tabletId: this.tabletData.tabletId,
+                                studentId: this.studentData.studentId,
+                                rentalPeriod: this.rentalPeriod
+                            }
                         }
-                    }
-                }).then(() => {
-                    this.$router.push({
-                        path: '/rentalSuccess',
-                        query: {
-                            rentalPeriod: `${this.rentalPeriod.split("-")[0]}년 ${this.rentalPeriod.split("-")[1]}월 ${this.rentalPeriod.split("-")[2]}일`,
-                            tabletId: this.tabletData.tabletId
-                        }
-                    })
-                }).catch(error => {
+                    }).then(() => {
+                        this.$router.push({
+                            path: '/rentalSuccess',
+                            query: {
+                                rentalPeriod: `${this.rentalPeriod.split("-")[0]}년 ${this.rentalPeriod.split("-")[1]}월 ${this.rentalPeriod.split("-")[2]}일`,
+                                tabletId: this.tabletData.tabletId
+                            }
+                        })
+                    }).catch(error => {
 
-                })
+                    })
+                }
 
             })
             setInterval(() => {

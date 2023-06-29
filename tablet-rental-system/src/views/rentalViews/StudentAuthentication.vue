@@ -83,7 +83,6 @@ export default {
                 },
                 method: 'get'
             }).then((res) => {
-                console.log(res)
                 if (res.data.isRental) {
                     this.alreadyRental()
                     this.isLoading = false
@@ -93,7 +92,7 @@ export default {
                         this.isLoading = false
                     } else {
                         this.$router.push({
-                            path: "/tabletSelection", query: {
+                            path: "/returnWaiting", query: {
                                 id: this.students.id,
                                 name: this.students.name
                             }

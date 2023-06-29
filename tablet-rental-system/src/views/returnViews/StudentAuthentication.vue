@@ -67,15 +67,23 @@ export default {
         verify() {
             this.isLoading = true
             axios({
-                url: `/api/student/getstudent/${this.students.id}/${this.students.name}`,
+                url: `/api/student/getstudent`,
+                params:{
+                    id:this.students.id,
+                    name:this.students.name
+                },
                 method: 'get'
             }).then((res) => {
-                console.log(res.data)
                 if(!res.data.isRental){
                     this.notRentalStudent()
                     this.isLoading = false
                 }else{
-                   
+                    this.$router.push({
+                            path: "/returnWaiting", query: {
+                                id: this.students.id,
+                                name: this.students.name
+                            }
+                        })
                 }
                 
             }).catch(err => {
